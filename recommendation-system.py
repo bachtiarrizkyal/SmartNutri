@@ -56,7 +56,8 @@ def preprocess_data(df):
     # Memilih kolom yang akan digunakan
     selected_columns = ['FoodID', 'FoodGroups', 'FoodName', 'Energi', 'Protein',
                        'Serat', 'VitaminC', 'Kalium', 'Magnesium', 'Kalsium',
-                       'Besi', 'GulaTotal', 'Natrium', 'LemakJenuh', 'Kolesterol']
+                       'Besi', 'GulaTotal', 'Natrium', 'LemakJenuh', 'Kolesterol',
+                       'LemakTunggal', 'LemakGanda', 'VitaminB6', 'VitaminB12', 'Air']
 
     df_clean = df_clean[selected_columns]
 
@@ -184,7 +185,7 @@ def get_nutrition_requirements(gender, age, energy_needs, diseases):
         'GulaTotal': (10 * energy_needs / 100) / 4,
         'Serat': [28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx],
         'Protein': [50, 70, 75, 65, 65, 65, 64, 64, 55, 65, 65, 60, 60, 60, 58, 58][idx],
-        'LemakJenuh': [30, 30, 30, 30, 30, 30, 30, 30, 20, 20, 20, 20, 20, 20, 20, 20][idx],
+        'LemakJenuh': (7 * energy_needs / 100) / 9,
         'VitaminC': [50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx],
         'Magnesium': [160, 225, 270, 360, 360, 360, 350, 350, 170, 220, 230, 330, 340, 340, 320, 320][idx],
         'Natrium': [1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx],
@@ -192,6 +193,11 @@ def get_nutrition_requirements(gender, age, energy_needs, diseases):
         'Kalium': [3900, 4800, 5300, 4700, 4700, 4700, 4700, 4700, 4400, 4800, 5000, 4700, 4700, 4700, 4700, 4700][idx],
         'Besi': [8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx],
         'Kolesterol': [300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300][idx],
+	    'LemakTunggal': (10 * energy_needs / 100) / 9,
+	    'LemakGanda': (8 * energy_needs / 100) / 9,
+	    'VitaminB6': [1.3, 1.3, 1.3, 1.3, 1.3, 1.7, 1.7, 1.7, 1.2, 1.2, 1.2, 1.3, 1.3, 1.5, 1.5, 1.5][idx],
+	    'VitaminB12': [3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 4, 4, 4, 4, 4, 4, 4][idx],
+	    'Air': [1850, 2100, 2300, 2500, 2500, 2500, 1800, 1600, 1850, 2100, 2150, 2350, 2350, 2350, 1550, 1400][idx],
         'Energi': energy_needs
     }
 
@@ -341,13 +347,18 @@ def label_food_by_nutrition(df, diseases, df_original):
 
     # Mendefinisikan batas untuk nutrisi tinggi
     high_thresholds = {
-        'Protein': 10,
-        'Serat': 6,
-        'VitaminC': 15,
-        'Kalium': 600,
-        'Magnesium': 48,
-        'Kalsium': 300,
-        'Besi': 2.4
+    'Protein': 10,
+    'Serat': 6,
+    'VitaminC': 15,
+    'Kalium': 250,
+    'Magnesium': 48,
+    'Kalsium': 150,
+    'Besi': 2.4,
+    'LemakTunggal': 4,
+    'LemakGanda': 3,
+    'VitaminB6': 0.2,
+    'VitaminB12': 0.6,
+    'Air': 65
     }
 
     # Mendefinisikan batas untuk nutrisi rendah
@@ -357,7 +368,7 @@ def label_food_by_nutrition(df, diseases, df_original):
         'LemakJenuh': 5,
         'Kolesterol': 100
     }
-
+    
     # Mengidentifikasi makanan tinggi nutrisi tertentu
     df_nutrition['high_protein'] = df_nutrition['original_Protein'] >= high_thresholds['Protein']
     df_nutrition['high_fiber'] = df_nutrition['original_Serat'] >= high_thresholds['Serat']
@@ -366,6 +377,11 @@ def label_food_by_nutrition(df, diseases, df_original):
     df_nutrition['high_magnesium'] = df_nutrition['original_Magnesium'] >= high_thresholds['Magnesium']
     df_nutrition['high_calcium'] = df_nutrition['original_Kalsium'] >= high_thresholds['Kalsium']
     df_nutrition['high_iron'] = df_nutrition['original_Besi'] >= high_thresholds['Besi']
+    df_nutrition['high_monounsaturated_fat'] = df_nutrition['original_LemakTunggal'] >= high_thresholds['LemakTunggal']
+    df_nutrition['high_polyunsaturated_fat'] = df_nutrition['original_LemakGanda'] >= high_thresholds['LemakGanda']
+    df_nutrition['high_vitaminb6'] = df_nutrition['original_VitaminB6'] >= high_thresholds['VitaminB6']
+    df_nutrition['high_vitaminb12'] = df_nutrition['original_VitaminB12'] >= high_thresholds['VitaminB12']
+    df_nutrition['high_water'] = df_nutrition['original_Air'] >= high_thresholds['Air']
 
     # Mengidentifikasi makanan rendah nutrisi tertentu
     df_nutrition['low_sugar'] = df_nutrition['original_GulaTotal'] <= low_thresholds['GulaTotal']
@@ -452,7 +468,8 @@ def prepare_food_data(df, user_info, df_original):
 def train_knn_model(df, user_info):
     # Menyiapkan fitur (X) dan target (y) - menggunakan nilai yang sudah dinormalisasi untuk pelatihan model
     X = df[['Energi', 'Protein', 'Serat', 'VitaminC', 'Kalium', 'Magnesium',
-            'Kalsium', 'Besi', 'GulaTotal', 'Natrium', 'LemakJenuh', 'Kolesterol']]
+            'Kalsium', 'Besi', 'GulaTotal', 'Natrium', 'LemakJenuh', 'Kolesterol', 
+            'LemakTunggal', 'LemakGanda', 'VitaminB6', 'VitaminB12', 'Air']]
     y = df['suitable']
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -488,7 +505,8 @@ def train_knn_model(df, user_info):
 def get_recommendation(knn, df_labeled, user_info, df_original, n_recommendations=15):
     X_predict = df_labeled[['Energi', 'Protein', 'Serat', 'VitaminC', 'Kalium',
                         'Magnesium', 'Kalsium', 'Besi', 'GulaTotal', 'Natrium',
-                        'LemakJenuh', 'Kolesterol']]
+                        'LemakJenuh', 'Kolesterol', 'LemakTunggal', 'LemakGanda', 
+                        'VitaminB6', 'VitaminB12', 'Air']]
 
     # Prediksi dengan model KNN
     knn_predictions = knn.predict(X_predict)
@@ -510,7 +528,7 @@ def get_recommendation(knn, df_labeled, user_info, df_original, n_recommendation
     suitable_foods['value_per_calorie'] = 0
 
     # Menghitung nilai berdasarkan nutrisi yang dibutuhkan (semakin tinggi semakin baik)
-    for nutrient in ['Protein', 'Serat', 'VitaminC', 'Kalium', 'Magnesium', 'Kalsium', 'Besi']:
+    for nutrient in ['Protein', 'Serat', 'VitaminC', 'Kalium', 'Magnesium', 'Kalsium', 'Besi', 'LemakTunggal', 'LemakGanda', 'VitaminB6', 'VitaminB12', 'Air']:
         if nutrient in nutrition_req:
             original_nutrient = f'original_{nutrient}'
             # Menambah nilai jika nutrisi baik ada dan kebutuhan nutrisi > 0
@@ -571,7 +589,9 @@ def get_recommendation(knn, df_labeled, user_info, df_original, n_recommendation
             'Protein': food['original_Protein'], 'Serat': food['original_Serat'], 'VitaminC': food['original_VitaminC'],
             'Kalium': food['original_Kalium'], 'Magnesium': food['original_Magnesium'], 'Kalsium': food['original_Kalsium'],
             'Besi': food['original_Besi'], 'GulaTotal': food['original_GulaTotal'], 'Natrium': food['original_Natrium'],
-            'LemakJenuh': food['original_LemakJenuh'], 'Kolesterol': food['original_Kolesterol']
+            'LemakJenuh': food['original_LemakJenuh'], 'Kolesterol': food['original_Kolesterol'], 
+            'LemakTunggal': food['original_LemakTunggal'], 'LemakGanda': food['original_LemakGanda'],
+            'VitaminB6': food['original_VitaminB6'], 'VitaminB12': food['original_VitaminB12'], 'Air': food['original_Air']
         })
         for nutrient_key in nutrition_req:
             original_key = f'original_{nutrient_key}'
@@ -775,7 +795,12 @@ def get_recommendation(knn, df_labeled, user_info, df_original, n_recommendation
                 'GulaTotal': food['original_GulaTotal'],
                 'Natrium': food['original_Natrium'],
                 'LemakJenuh': food['original_LemakJenuh'],
-                'Kolesterol': food['original_Kolesterol']
+                'Kolesterol': food['original_Kolesterol'],
+                'LemakTunggal': food['original_LemakTunggal'],
+                'LemakGanda': food['original_LemakGanda'],
+                'VitaminB6': food['original_VitaminB6'],
+                'VitaminB12': food['original_VitaminB12'],
+                'Air': food['original_Air']
             })
 
     # Konversi hasil rekomendasi ke DataFrame Pandas
@@ -833,7 +858,8 @@ def visualize_nutrition_comparison(recommended_df, user_info):
     # Menghitung total nutrisi dari makanan yang direkomendasikan
     total_nutrition = {}
     for nutrient in ['Energi', 'Protein', 'Serat', 'VitaminC', 'Kalium', 'Magnesium',
-                    'Kalsium', 'Besi', 'GulaTotal', 'Natrium', 'LemakJenuh', 'Kolesterol']:
+                    'Kalsium', 'Besi', 'GulaTotal', 'Natrium', 'LemakJenuh', 'Kolesterol',
+                    'LemakTunggal', 'LemakGanda', 'VitaminB6', 'VitaminB12', 'Air']:
         total_nutrition[nutrient] = recommended_df[nutrient].sum()
 
     # Kebutuhan nutrisi pengguna
@@ -894,17 +920,23 @@ def display_user_info(user_info):
     print("\n========== KEBUTUHAN NUTRISI ==========")
     nutrition_req = user_info['nutrition_req']
     print(f"Energi: {nutrition_req['Energi']:.2f} kkal")
+    print(f"Air: {nutrition_req['Air']:.2f} ml")
     print(f"Protein: {nutrition_req['Protein']:.2f} g")
     print(f"Serat: {nutrition_req['Serat']:.2f} g")
     print(f"Gula Total: {nutrition_req['GulaTotal']:.2f} g")
     print(f"Lemak Jenuh: {nutrition_req['LemakJenuh']:.2f} g")
-    print(f"Vitamin C: {nutrition_req['VitaminC']:.2f} mg")
+    print(f"Lemak Tunggal: {nutrition_req['LemakTunggal']:.2f} g")
+    print(f"Lemak Ganda: {nutrition_req['LemakGanda']:.2f} g")
+    print(f"Vitamin C: {nutrition_req['VitaminC']:.2f} mg")    
+    print(f"Vitamin B6: {nutrition_req['VitaminB6']:.2f} mg")
+    print(f"Vitamin B12: {nutrition_req['VitaminB12']:.2f} μg")
     print(f"Magnesium: {nutrition_req['Magnesium']:.2f} mg")
     print(f"Natrium: {nutrition_req['Natrium']:.2f} mg")
     print(f"Kalsium: {nutrition_req['Kalsium']:.2f} mg")
     print(f"Kalium: {nutrition_req['Kalium']:.2f} mg")
     print(f"Besi: {nutrition_req['Besi']:.2f} mg")
     print(f"Kolesterol: {nutrition_req['Kolesterol']:.2f} mg")
+    
 
 def display_food_recommendations(recommended_df):
     print("\n========== REKOMENDASI MAKANAN ==========")
@@ -939,11 +971,16 @@ def display_food_recommendations(recommended_df):
         for _, food in foods.iterrows():
             print(f"\nNama Makanan: {food['FoodName']}")
             print(f"Energi: {food['Energi']:.2f} kkal")
+            print(f"Air: {food['Air']:.2f} ml")
             print(f"Protein: {food['Protein']:.2f} g")
             print(f"Serat: {food['Serat']:.2f} g")
             print(f"Gula Total: {food['GulaTotal']:.2f} g")
             print(f"Lemak Jenuh: {food['LemakJenuh']:.2f} g")
+            print(f"Lemak Tunggal: {food['LemakTunggal']:.2f} g")
+            print(f"Lemak Ganda: {food['LemakGanda']:.2f} g")
             print(f"Vitamin C: {food['VitaminC']:.2f} mg")
+            print(f"Vitamin B6: {food['VitaminB6']:.2f} mg")
+            print(f"Vitamin B12: {food['VitaminB12']:.2f} mg")
             print(f"Magnesium: {food['Magnesium']:.2f} mg")
             print(f"Natrium: {food['Natrium']:.2f} mg")
             print(f"Kalsium: {food['Kalsium']:.2f} mg")
@@ -956,11 +993,16 @@ def display_food_recommendations(recommended_df):
 
     print("\n========== TOTAL NUTRISI REKOMENDASI ==========")
     print(f"Total Energi: {total_nutrition['Energi']:.2f} kkal")
+    print(f"Total Air: {total_nutrition['Air']:.2f} ml")
     print(f"Total Protein: {total_nutrition['Protein']:.2f} g")
     print(f"Total Serat: {total_nutrition['Serat']:.2f} g")
     print(f"Total Gula: {total_nutrition['GulaTotal']:.2f} g")
     print(f"Total Lemak Jenuh: {total_nutrition['LemakJenuh']:.2f} g")
+    print(f"Total Lemak Tunggal: {total_nutrition['LemakTunggal']:.2f} g")
+    print(f"Total Lemak Ganda: {total_nutrition['LemakGanda']:.2f} g")
     print(f"Total Vitamin C: {total_nutrition['VitaminC']:.2f} mg")
+    print(f"Total Vitamin B6: {total_nutrition['VitaminB6']:.2f} mg")
+    print(f"Total Vitamin B12: {total_nutrition['VitaminB12']:.2f} mg")
     print(f"Total Magnesium: {total_nutrition['Magnesium']:.2f} mg")
     print(f"Total Natrium: {total_nutrition['Natrium']:.2f} mg")
     print(f"Total Kalsium: {total_nutrition['Kalsium']:.2f} mg")
