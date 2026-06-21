@@ -13,7 +13,7 @@ warnings.filterwarnings('ignore')
 # Set page configuration
 st.set_page_config(
     page_title="SmartNutri",
-    page_icon="🍱",
+    page_icon="🥗",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -804,7 +804,7 @@ def get_recommendation(knn, df_labeled, user_info, df_original, n_recommendation
     return recommended_df
 
 def main():
-    st.markdown('<h1 class="main-header">🍱 Rekomendasi Makanan Berbasis Data USDA</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">🥗 SmartNutri</h1>', unsafe_allow_html=True)
     
     # Load data
     with st.spinner('Memuat data makanan...'):
