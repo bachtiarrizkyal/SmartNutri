@@ -1022,9 +1022,10 @@ def main():
                 nutrition_req = user_info['nutrition_req']
                 
                 # Create comparison dataframe
-                nutrients = ['Energi', 'Protein', 'Serat', 'VitaminC', 'Kalium', 'Magnesium',
-                           'Kalsium', 'Besi', 'GulaTotal', 'Natrium', 'LemakJenuh', 'Kolesterol',
-                           'LemakTunggal', 'LemakGanda', 'VitaminB6', 'VitaminB12', 'Air']
+                nutrients = ['Energi', 'Air', 'Protein', 'Serat', 'VitaminC', 
+                             'VitaminB6', 'VitaminB12','Kalium', 'Magnesium',
+                            'Kalsium', 'Besi', 'LemakTunggal', 'LemakGanda', 
+                            'GulaTotal', 'Natrium', 'LemakJenuh', 'Kolesterol']
                 
                 comparison_data = []
                 for nutrient in nutrients:
@@ -1045,7 +1046,14 @@ def main():
                 cols = st.columns(4)
                 for i, row in comparison_df.iterrows():
                     with cols[i % 4]:
-                        unit = "kkal" if row['Nutrisi'] == 'Energi' else ("g" if row['Nutrisi'] in ['Protein', 'Serat', 'GulaTotal', 'LemakJenuh'] else "mg")
+                        unit = (
+                            "kkal" if row['Nutrisi'] == 'Energi'
+                            else "ml" if row['Nutrisi'] == 'Air'
+                            else "μg" if row['Nutrisi'] == 'VitaminB12'
+                            else "mg" if row['Nutrisi'] in ['VitaminB6', 'Lemak Tunggal', 'Lemak Ganda']
+                            else "g" if row['Nutrisi'] in ['Protein', 'Serat', 'GulaTotal', 'LemakJenuh']
+                            else "mg"
+                        )
                         st.metric(
                             label=row['Nutrisi'],
                             value=f"{row['Rekomendasi']:.1f} {unit}",
@@ -1053,7 +1061,7 @@ def main():
                         )
                 # Visualization
                 def get_custom_color(nutrient, percentage):
-                    if nutrient in ['Energi', 'Protein', 'Serat', 'VitaminC', 'Kalium', 'Magnesium', 'Kalsium', 'Besi']:
+                    if nutrient in ['Energi', 'Air', 'Protein', 'Serat', 'VitaminC', 'VitaminB6', 'VitaminB12', 'Kalium', 'Magnesium', 'Kalsium', 'Besi', 'LemakTunggal', 'LemakGanda']:
                         if percentage < 80:
                             return 'red'
                         elif 80 <= percentage <= 100:
