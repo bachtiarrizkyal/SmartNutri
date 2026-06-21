@@ -864,7 +864,6 @@ def main():
     diabetes = st.sidebar.checkbox("Diabetes", disabled=normal)
     hipertensi = st.sidebar.checkbox("Hipertensi", disabled=normal)
     cardiovascular = st.sidebar.checkbox("Cardiovascular Disease", disabled=normal)
-    gangguanmental = st.sidebar.checkbox("Gangguan Mental", disabled=normal)
     
     # Prepare diseases list
     diseases = []
