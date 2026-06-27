@@ -1482,6 +1482,18 @@ def main():
                         ""  # Add spacing after this section
                     ])
                 
+                if 'gangguan mental' in diseases:
+                    recommendations.extend([
+                        "🩺 **Saran untuk Gangguan Mental:**",
+                        " - Konsumsi makanan tinggi Protein, Lemak Tak Jenuh (Tunggal & Ganda), Serat, Vitamin B6, Vitamin B12, Vitamin C, Zat Besi, dan Air",
+                        " - Batasi konsumsi makanan tinggi Gula dan Lemak Jenuh",
+                        " - Minum air putih yang cukup setiap hari",
+                        " - Tidur yang cukup dan teratur",
+                        " - Lakukan aktivitas fisik ringan secara rutin",
+                        " - Kelola stres dan lakukan kontrol dengan tenaga kesehatan bila diperlukan",
+                        ""
+                    ])
+                
                 if not recommendations:
                     recommendations = [
                         "✅ **Status Nutrisi Baik!**",
