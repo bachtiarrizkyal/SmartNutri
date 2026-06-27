@@ -1188,7 +1188,7 @@ def main():
         min_value=150,
         max_value=300,
         value=170,
-        step=1
+        step=0.5
     )
     
     # Weight input
@@ -1197,7 +1197,7 @@ def main():
         min_value=30.0,
         max_value=200.0,
         value=70.0,
-        step=0.1
+        step=0.5
     )
     
     # Health conditions
