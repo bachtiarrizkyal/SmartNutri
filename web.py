@@ -1181,17 +1181,18 @@ def main():
         max_value=100,
         value=None,
         placeholder="Masukkan usia Anda",
+        help="Minimal 10 tahun, Maksimal 100 tahun",
         step=1
     )
     
     # Height input
     height = st.sidebar.number_input(
-        "Tinggi Badan (cm): (minimal 150 cm)",
+        "Tinggi Badan (cm):",
         min_value=150.0,
         max_value=500.0,
         value=None,
         placeholder="Masukkan Tinggi Badan Anda",
-        help="Minimal 150 cm, maksimal 500 cm",        
+        help="Minimal 150 cm, Maksimal 500 cm",        
         step=0.5
     )
     
@@ -1202,6 +1203,7 @@ def main():
         max_value=200.0,
         value=None,
         placeholder="Masukkan Berat Badan Anda",
+        help="Minimal 30 kg, Maksimal 200 kg",
         step=0.5
     )
     
