@@ -1171,7 +1171,7 @@ def main():
     "Jenis Kelamin:",
     options=["Laki-laki", "Perempuan"],
     index=None,
-    placeholder="Pilih jenis kelamin"
+    placeholder="Pilih jenis kelamin",
     )
     
     # Age input
