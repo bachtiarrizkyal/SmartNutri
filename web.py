@@ -1253,9 +1253,23 @@ def main():
     
     # Process button
     if st.sidebar.button("🔍 Dapatkan Rekomendasi", type="primary"):
-        with st.spinner('Menyusun rekomendasi makanan'):
-            # Process user data
-            user_info = process_user_data(gender.lower(), age, height, weight, diseases,  preferred_category)
+        
+        # Validasi input
+        if gender is None:
+            st.error("⚠️ Silakan pilih jenis kelamin terlebih dahulu.")
+        elif age is None:
+            st.error("⚠️ Silakan isi usia terlebih dahulu.")
+        elif height is None:
+            st.error("⚠️ Silakan isi tinggi badan terlebih dahulu.")
+        elif weight is None:
+            st.error("⚠️ Silakan isi berat badan terlebih dahulu.")
+        elif not diseases:
+            st.error("⚠️ Silakan pilih minimal satu kondisi kesehatan.")
+        else:
+            with st.spinner('Menyusun rekomendasi makanan'):   
+                
+                # Process user data
+                user_info = process_user_data(gender.lower(), age, height, weight, diseases,  preferred_category)
             
             # Display user profile
             st.markdown('<h2 class="sub-header">👤 Profil Pengguna</h2>', unsafe_allow_html=True)
