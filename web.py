@@ -1683,11 +1683,11 @@ def main():
         makanan yang sesuai berdasarkan:
         
         - **Profil Pengguna**: Usia, jenis kelamin, tinggi badan, berat badan
-        - **Kondisi Kesehatan**: Diabetes, hipertensi, Cardiovascular Disease (CVD), dan Gangguan Kesehatan Mental.
+        - **Kondisi Kesehatan**: Diabetes, Hipertensi, Cardiovascular Disease (CVD), dan Gangguan Kesehatan Mental.
         - **Kebutuhan Nutrisi**: Berdasarkan Angka Kecukupan Gizi (AKG) Indonesia yang disesuaikan dengan kondisi pengguna
         - **Distribusi Waktu Makan**: Sarapan (30%), Makan Siang (40%), Makan Malam (30%)
         
-        **Sumber Data**: United States Department of Agriculture (USDA) FoodCentral Database. Dataset diakses melalui https://www.andrafarm.com/. Data USDA dipilih karena merupakan basis data nutrisi terbesar dan terlengkap di dunia, menyediakan detail nutrisi yang lengkap, dan sering digunakan dalam penelitian serta pedoman diet untuk penyakit kronis seperti diabetes, hipertensi, dan CVD.
+        **Sumber Data**: United States Department of Agriculture (USDA) FoodCentral Database. Dataset diakses melalui https://www.andrafarm.com/. Data USDA dipilih karena merupakan basis data nutrisi terbesar dan terlengkap di dunia, menyediakan detail nutrisi yang lengkap, dan sering digunakan dalam penelitian serta pedoman diet untuk penyakit kronis seperti diabetes, hipertensi, cardiovascular disease, dan gangguan mental.
         
         Website ini disusun oleh:
         - Bachtiar Rizky Alamsyah
