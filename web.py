@@ -1170,7 +1170,8 @@ def main():
     gender = st.sidebar.selectbox(
         "Jenis Kelamin:",
         options=["Laki-laki", "Perempuan"],
-        index=0
+        index=None
+        placeholder="Pilih jenis kelamin"
     )
     
     # Age input
@@ -1179,6 +1180,7 @@ def main():
         min_value=10,
         max_value=100,
         value=None,
+        placeholder="Masukkan usia Anda",
         step=1
     )
     
@@ -1188,6 +1190,7 @@ def main():
         min_value=150.0,
         max_value=500.0,
         value=None,
+        placeholder="Masukkan Tinggi Badan Anda (Min 150cm)",
         step=0.5
     )
     
@@ -1197,6 +1200,7 @@ def main():
         min_value=30.0,
         max_value=200.0,
         value=None,
+        placeholder="Masukkan Berat Badan Anda",
         step=0.5
     )
     
