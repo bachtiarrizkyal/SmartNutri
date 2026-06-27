@@ -1168,10 +1168,10 @@ def main():
     
     # Gender selection
     gender = st.sidebar.selectbox(
-        "Jenis Kelamin:",
-        options=["Laki-laki", "Perempuan"],
-        index=None
-        placeholder="Pilih jenis kelamin"
+    "Jenis Kelamin:",
+    options=["Laki-laki", "Perempuan"],
+    index=None,
+    placeholder="Pilih jenis kelamin"
     )
     
     # Age input
