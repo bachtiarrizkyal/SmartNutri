@@ -1256,13 +1256,13 @@ def main():
         
         # Validasi input
         if gender is None:
-            st.error("⚠️ Silakan pilih jenis kelamin terlebih dahulu.")
+            st.error("⚠️ Silakan pilih jenis kelamin Anda terlebih dahulu.")
         elif age is None:
-            st.error("⚠️ Silakan isi usia terlebih dahulu.")
+            st.error("⚠️ Silakan isi usia Anda terlebih dahulu.")
         elif height is None:
-            st.error("⚠️ Silakan isi tinggi badan terlebih dahulu.")
+            st.error("⚠️ Silakan isi tinggi badan Anda terlebih dahulu.")
         elif weight is None:
-            st.error("⚠️ Silakan isi berat badan terlebih dahulu.")
+            st.error("⚠️ Silakan isi berat badan Anda terlebih dahulu.")
         elif not diseases:
             st.error("⚠️ Silakan pilih minimal satu kondisi kesehatan.")
         else:
