@@ -171,11 +171,13 @@ def get_age_category(age):
         return "lansia"
 
 def get_nutrition_requirements(gender, age, energy_needs, diseases):
-    """Get nutrition requirements based on user profile"""
+    # Mendapatkan kategori usia
     age_category = get_age_category(age)
+
+    # Indeks untuk nilai AKG berdasarkan jenis kelamin dan usia
     idx = 0
-    
-    # Age and gender-based index calculation
+
+    # Remaja laki-laki (10-18 tahun)
     if gender.lower() == 'laki-laki' and age_category == 'remaja':
         if 10 <= age <= 12:
             idx = 0
@@ -183,6 +185,8 @@ def get_nutrition_requirements(gender, age, energy_needs, diseases):
             idx = 1
         elif 16 <= age <= 18:
             idx = 2
+
+    # Dewasa laki-laki (19-64 tahun)
     elif gender.lower() == 'laki-laki' and age_category == 'dewasa':
         if 19 <= age <= 29:
             idx = 3
@@ -190,11 +194,15 @@ def get_nutrition_requirements(gender, age, energy_needs, diseases):
             idx = 4
         elif 50 <= age <= 64:
             idx = 5
+
+    # Lansia laki-laki (>64 tahun)
     elif gender.lower() == 'laki-laki' and age_category == 'lansia':
         if 65 <= age <= 80:
             idx = 6
         else:
             idx = 7
+
+    # Remaja perempuan (10-18 tahun)
     elif gender.lower() == 'perempuan' and age_category == 'remaja':
         if 10 <= age <= 12:
             idx = 8
@@ -202,6 +210,8 @@ def get_nutrition_requirements(gender, age, energy_needs, diseases):
             idx = 9
         elif 16 <= age <= 18:
             idx = 10
+
+    # Dewasa perempuan (19-64 tahun)
     elif gender.lower() == 'perempuan' and age_category == 'dewasa':
         if 19 <= age <= 29:
             idx = 11
@@ -209,126 +219,291 @@ def get_nutrition_requirements(gender, age, energy_needs, diseases):
             idx = 12
         elif 50 <= age <= 64:
             idx = 13
+
+    # Lansia perempuan (>64 tahun)
     elif gender.lower() == 'perempuan' and age_category == 'lansia':
         if 65 <= age <= 80:
             idx = 14
         else:
             idx = 15
-    
-    # AKG Kondisi Normal
+
+   # ===== AKG KONDISI NORMAL =====
     nutrition_req = {
-        'GulaTotal': (10 * energy_needs / 100) / 4,
-        'Serat': [28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx],
-        'Protein': [50, 70, 75, 65, 65, 65, 64, 64, 55, 65, 65, 60, 60, 60, 58, 58][idx],
-        'LemakJenuh': (7 * energy_needs / 100) / 9,
-        'VitaminC': [50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx],
-        'Magnesium': [160, 225, 270, 360, 360, 360, 350, 350, 170, 220, 230, 330, 340, 340, 320, 320][idx],
-        'Natrium': [1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx],
-        'Kalsium': [1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200, 1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200][idx],
-        'Kalium': [3900, 4800, 5300, 4700, 4700, 4700, 4700, 4700, 4400, 4800, 5000, 4700, 4700, 4700, 4700, 4700][idx],
-        'Besi': [8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx],
-        'Kolesterol': [300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300][idx],
-	    'LemakTunggal': (10 * energy_needs / 100) / 9,
-	    'LemakGanda': (8 * energy_needs / 100) / 9,
-	    'VitaminB6': [1.3, 1.3, 1.3, 1.3, 1.3, 1.7, 1.7, 1.7, 1.2, 1.2, 1.2, 1.3, 1.3, 1.5, 1.5, 1.5][idx],
-	    'VitaminB12': [3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 4, 4, 4, 4, 4, 4, 4][idx],
-	    'Air': [1850, 2100, 2300, 2500, 2500, 2500, 1800, 1600, 1850, 2100, 2150, 2350, 2350, 2350, 1550, 1400][idx],
-        'Energi': energy_needs
+        'GulaTotal'  : (10 * energy_needs / 100) / 4,
+        'Serat'      : [28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx],
+        'Protein'    : [50, 70, 75, 65, 65, 65, 64, 64, 55, 65, 65, 60, 60, 60, 58, 58][idx],
+        'LemakJenuh' : (7 * energy_needs / 100) / 9,
+        'VitaminC'   : [50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx],
+        'Magnesium'  : [160, 225, 270, 360, 360, 360, 350, 350, 170, 220, 230, 330, 340, 340, 320, 320][idx],
+        'Natrium'    : [1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx],
+        'Kalsium'    : [1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200, 1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200][idx],
+        'Kalium'     : [3900, 4800, 5300, 4700, 4700, 4700, 4700, 4700, 4400, 4800, 5000, 4700, 4700, 4700, 4700, 4700][idx],
+        'Besi'       : [8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx],
+        'Kolesterol' : [300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300][idx],
+        'LemakTunggal': (10 * energy_needs / 100) / 9,
+        'LemakGanda' : (8 * energy_needs / 100) / 9,
+        'VitaminB6'  : [1.3, 1.3, 1.3, 1.3, 1.3, 1.7, 1.7, 1.7, 1.2, 1.2, 1.2, 1.3, 1.3, 1.5, 1.5, 1.5][idx],
+        'VitaminB12' : [3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 4, 4, 4, 4, 4, 4, 4][idx],
+        'Air'        : [1850, 2100, 2300, 2500, 2500, 2500, 1800, 1600, 1850, 2100, 2150, 2350, 2350, 2350, 1550, 1400][idx],
+        'Energi'     : energy_needs
     }
-
-    # AKG Pengidap Penyakit
+ 
+    # ===== AKG PENGIDAP PENYAKIT =====
     if diseases:
+ 
+        # ----- TUNGGAL -----
+ 
         # Pengidap Diabetes
-        if 'diabetes' in diseases and 'hipertensi' not in diseases and 'cardiovascular disease' not in diseases:
+        if 'diabetes' in diseases and 'hipertensi' not in diseases and 'cardiovascular disease' not in diseases and 'gangguan mental' not in diseases:
             nutrition_req.update({
-                'Serat': [32.2, 39.1, 42.55, 42.55, 41.4, 34.5, 28.75, 25.3, 31.05, 33.35, 33.35, 36.8, 34.5, 28.75, 25.3, 23][idx],
-                'Protein': (20 * energy_needs / 100) / 4,
-                'VitaminC': [57.5, 86.25, 103.5, 103.5, 103.5, 103.5, 103.5, 103.5, 57.5, 74.75, 86.25, 86.25, 86.25, 86.25, 86.25, 86.25][idx],
-                'GulaTotal': (5 * energy_needs / 100) / 4,
-                'LemakJenuh': (7 * energy_needs / 100) / 9,
-                'Natrium': [1105, 1275, 1445, 1275, 1275, 1105, 935, 850, 1190, 1275, 1360, 1275, 1275, 1190, 1020, 850][idx],
-                'Kolesterol': 200
+                'Serat'      : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])   * 1.15,
+                'Protein'    : (20 * energy_needs / 100) / 4,
+                'VitaminC'   : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])   * 1.15,
+                'GulaTotal'  : (5 * energy_needs / 100) / 4,
+                'LemakJenuh' : (5 * energy_needs / 100) / 9,
+                'Natrium'    : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol' : 200,
             })
-
+ 
         # Pengidap Hipertensi
-        elif 'hipertensi' in diseases and 'diabetes' not in diseases and 'cardiovascular disease' not in diseases:
+        elif 'hipertensi' in diseases and 'diabetes' not in diseases and 'cardiovascular disease' not in diseases and 'gangguan mental' not in diseases:
             nutrition_req.update({
-                'Serat': [32.2, 39.1, 42.55, 42.55, 41.4, 34.5, 28.75, 25.3, 31.05, 33.35, 33.35, 36.8, 34.5, 28.75, 25.3, 23][idx],
-                'Magnesium': [184, 258.75, 310.5, 414, 414, 414, 402.5, 402.5, 195.5, 253, 264.5, 379.5, 391, 391, 368, 368][idx],
-                'Kalsium': [1380, 1380, 1380, 1150, 1150, 1380, 1380, 1380, 1380, 1380, 1380, 1150, 1150, 1380, 1380, 1380][idx],
-                'Kalium': [4485, 5520, 6095, 5405, 5405, 5405, 5405, 5405, 5060, 5520, 5750, 5405, 5405, 5405, 5405, 5405][idx],
-                'LemakJenuh': (7 * energy_needs / 100) / 9,
-                'Natrium': [1105, 1275, 1445, 1275, 1275, 1105, 935, 850, 1190, 1275, 1360, 1275, 1275, 1190, 1020, 850][idx],
-                'Kolesterol': 200
+                'Serat'      : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])     * 1.15,
+                'Magnesium'  : ([160, 225, 270, 360, 360, 360, 350, 350, 170, 220, 230, 330, 340, 340, 320, 320][idx]) * 1.15,
+                'Kalsium'    : ([1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200, 1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200][idx]) * 1.15,
+                'Kalium'     : ([3900, 4800, 5300, 4700, 4700, 4700, 4700, 4700, 4400, 4800, 5000, 4700, 4700, 4700, 4700, 4700][idx]) * 1.15,
+                'LemakJenuh' : (5 * energy_needs / 100) / 9,
+                'Natrium'    : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol' : 200,
             })
-
+ 
         # Pengidap Cardiovascular Disease
-        elif 'cardiovascular disease' in diseases and 'diabetes' not in diseases and 'hipertensi' not in diseases:
+        elif 'cardiovascular disease' in diseases and 'diabetes' not in diseases and 'hipertensi' not in diseases and 'gangguan mental' not in diseases:
             nutrition_req.update({
-                'Serat': [32.2, 39.1, 42.55, 42.55, 41.4, 34.5, 28.75, 25.3, 31.05, 33.35, 33.35, 36.8, 34.5, 28.75, 25.3, 23][idx],
-                'Protein': (20 * energy_needs / 100) / 4,
-                'Besi': [9.2, 12.65, 12.65, 10.35, 10.35, 10.35, 10.35, 10.35, 9.2, 17.25, 17.25, 20.7, 20.7, 9.2, 9.2, 9.2][idx],
-                'LemakJenuh': (7 * energy_needs / 100) / 9,
-                'Natrium': [1105, 1275, 1445, 1275, 1275, 1105, 935, 850, 1190, 1275, 1360, 1275, 1275, 1190, 1020, 850][idx],
-                'Kolesterol': 200
+                'Serat'      : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])   * 1.15,
+                'Protein'    : (20 * energy_needs / 100) / 4,
+                'Besi'       : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])             * 1.15,
+                'LemakJenuh' : (5 * energy_needs / 100) / 9,
+                'Natrium'    : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol' : 200,
             })
-
+ 
+        # Pengidap Gangguan Mental
+        elif 'gangguan mental' in diseases and 'diabetes' not in diseases and 'hipertensi' not in diseases and 'cardiovascular disease' not in diseases:
+            nutrition_req.update({
+                'Serat'       : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])   * 1.15,
+                'Protein'     : (20 * energy_needs / 100) / 4,
+                'VitaminC'    : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])   * 1.15,
+                'VitaminB6'   : ([1.3, 1.3, 1.3, 1.3, 1.3, 1.7, 1.7, 1.7, 1.2, 1.2, 1.2, 1.3, 1.3, 1.5, 1.5, 1.5][idx]) * 1.15, 
+                'VitaminB12'  : ([3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 4, 4, 4, 4, 4, 4, 4][idx])             * 1.15,
+                'Besi'        : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])            * 1.15,
+                'Air'         : ([1850, 2100, 2300, 2500, 2500, 2500, 1800, 1600, 1850, 2100, 2150, 2350, 2350, 2350, 1550, 1400][idx]) * 1.15,
+                'GulaTotal'   : (5 * energy_needs / 100) / 4,
+                'LemakJenuh'  : (5 * energy_needs / 100) / 9,
+                'LemakTunggal': (17 * energy_needs / 100) / 9,
+                'LemakGanda'  : (10 * energy_needs / 100) / 9,
+            })
+ 
+        # ----- KOMBINASI 2 PENYAKIT -----
+ 
         # Pengidap Diabetes dan Hipertensi
-        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'cardiovascular disease' not in diseases:
+        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'cardiovascular disease' not in diseases and 'gangguan mental' not in diseases:
             nutrition_req.update({
-                'Serat': [32.2, 39.1, 42.55, 42.55, 41.4, 34.5, 28.75, 25.3, 31.05, 33.35, 33.35, 36.8, 34.5, 28.75, 25.3, 23][idx],
-                'Protein': (20 * energy_needs / 100) / 4,
-                'VitaminC': [57.5, 86.25, 103.5, 103.5, 103.5, 103.5, 103.5, 103.5, 57.5, 74.75, 86.25, 86.25, 86.25, 86.25, 86.25, 86.25][idx],
-                'Magnesium': [184, 258.75, 310.5, 414, 414, 414, 402.5, 402.5, 195.5, 253, 264.5, 379.5, 391, 391, 368, 368][idx],
-                'Kalsium': [1380, 1380, 1380, 1150, 1150, 1380, 1380, 1380, 1380, 1380, 1380, 1150, 1150, 1380, 1380, 1380][idx],
-                'Kalium': [4485, 5520, 6095, 5405, 5405, 5405, 5405, 5405, 5060, 5520, 5750, 5405, 5405, 5405, 5405, 5405][idx],
-                'GulaTotal': (5 * energy_needs / 100) / 4,
-                'LemakJenuh': (7 * energy_needs / 100) / 9,
-                'Natrium': [1105, 1275, 1445, 1275, 1275, 1105, 935, 850, 1190, 1275, 1360, 1275, 1275, 1190, 1020, 850][idx],
-                'Kolesterol': 200
+                'Serat'      : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])     * 1.15,
+                'Protein'    : (20 * energy_needs / 100) / 4,
+                'VitaminC'   : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])     * 1.15,
+                'Magnesium'  : ([160, 225, 270, 360, 360, 360, 350, 350, 170, 220, 230, 330, 340, 340, 320, 320][idx]) * 1.15,
+                'Kalsium'    : ([1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200, 1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200][idx]) * 1.15,
+                'Kalium'     : ([3900, 4800, 5300, 4700, 4700, 4700, 4700, 4700, 4400, 4800, 5000, 4700, 4700, 4700, 4700, 4700][idx]) * 1.15,
+                'GulaTotal'  : (5 * energy_needs / 100) / 4,
+                'LemakJenuh' : (5 * energy_needs / 100) / 9,
+                'Natrium'    : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol' : 200,
             })
-
+ 
         # Pengidap Diabetes dan Cardiovascular Disease
-        elif 'diabetes' in diseases and 'cardiovascular disease' in diseases and 'hipertensi' not in diseases:
+        elif 'diabetes' in diseases and 'cardiovascular disease' in diseases and 'hipertensi' not in diseases and 'gangguan mental' not in diseases:
             nutrition_req.update({
-                'Serat': [32.2, 39.1, 42.55, 42.55, 41.4, 34.5, 28.75, 25.3, 31.05, 33.35, 33.35, 36.8, 34.5, 28.75, 25.3, 23][idx],
-                'Protein': (20 * energy_needs / 100) / 4,
-                'VitaminC': [57.5, 86.25, 103.5, 103.5, 103.5, 103.5, 103.5, 103.5, 57.5, 74.75, 86.25, 86.25, 86.25, 86.25, 86.25, 86.25][idx],
-                'Besi': [9.2, 12.65, 12.65, 10.35, 10.35, 10.35, 10.35, 10.35, 9.2, 17.25, 17.25, 20.7, 20.7, 9.2, 9.2, 9.2][idx],
-                'GulaTotal': (5 * energy_needs / 100) / 4,
-                'LemakJenuh': (7 * energy_needs / 100) / 9,
-                'Natrium': [1105, 1275, 1445, 1275, 1275, 1105, 935, 850, 1190, 1275, 1360, 1275, 1275, 1190, 1020, 850][idx],
-                'Kolesterol': 200
+                'Serat'      : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])   * 1.15,
+                'Protein'    : (20 * energy_needs / 100) / 4,
+                'VitaminC'   : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])   * 1.15,
+                'Besi'       : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])             * 1.15,
+                'GulaTotal'  : (5 * energy_needs / 100) / 4,
+                'LemakJenuh' : (5 * energy_needs / 100) / 9,
+                'Natrium'    : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol' : 200,
             })
-
+ 
         # Pengidap Hipertensi dan Cardiovascular Disease
-        elif 'hipertensi' in diseases and 'cardiovascular disease' in diseases and 'diabetes' not in diseases:
+        elif 'hipertensi' in diseases and 'cardiovascular disease' in diseases and 'diabetes' not in diseases and 'gangguan mental' not in diseases:
             nutrition_req.update({
-                'Serat': [32.2, 39.1, 42.55, 42.55, 41.4, 34.5, 28.75, 25.3, 31.05, 33.35, 33.35, 36.8, 34.5, 28.75, 25.3, 23][idx],
-                'Protein': (20 * energy_needs / 100) / 4,
-                'Magnesium': [184, 258.75, 310.5, 414, 414, 414, 402.5, 402.5, 195.5, 253, 264.5, 379.5, 391, 391, 368, 368][idx],
-                'Kalsium': [1380, 1380, 1380, 1150, 1150, 1380, 1380, 1380, 1380, 1380, 1380, 1150, 1150, 1380, 1380, 1380][idx],
-                'Kalium': [4485, 5520, 6095, 5405, 5405, 5405, 5405, 5405, 5060, 5520, 5750, 5405, 5405, 5405, 5405, 5405][idx],
-                'Besi': [9.2, 12.65, 12.65, 10.35, 10.35, 10.35, 10.35, 10.35, 9.2, 17.25, 17.25, 20.7, 20.7, 9.2, 9.2, 9.2][idx],
-                'LemakJenuh': (7 * energy_needs / 100) / 9,
-                'Natrium': [1105, 1275, 1445, 1275, 1275, 1105, 935, 850, 1190, 1275, 1360, 1275, 1275, 1190, 1020, 850][idx],
-                'Kolesterol': 200
+                'Serat'      : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])     * 1.15,
+                'Protein'    : (20 * energy_needs / 100) / 4,
+                'Magnesium'  : ([160, 225, 270, 360, 360, 360, 350, 350, 170, 220, 230, 330, 340, 340, 320, 320][idx]) * 1.15,
+                'Kalsium'    : ([1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200, 1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200][idx]) * 1.15,
+                'Kalium'     : ([3900, 4800, 5300, 4700, 4700, 4700, 4700, 4700, 4400, 4800, 5000, 4700, 4700, 4700, 4700, 4700][idx]) * 1.15,
+                'Besi'       : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])               * 1.15,
+                'LemakJenuh' : (5 * energy_needs / 100) / 9,
+                'Natrium'    : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol' : 200,
             })
-
-        # Pengidap Diabetes, Hipertensi, dan Cardiovascular Disease
-        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'cardiovascular disease' in diseases:
+ 
+        # Pengidap Diabetes dan Gangguan Mental
+        elif 'diabetes' in diseases and 'gangguan mental' in diseases and 'hipertensi' not in diseases and 'cardiovascular disease' not in diseases:
             nutrition_req.update({
-                'Serat': [32.2, 39.1, 42.55, 42.55, 41.4, 34.5, 28.75, 25.3, 31.05, 33.35, 33.35, 36.8, 34.5, 28.75, 25.3, 23][idx],
-                'Protein': (20 * energy_needs / 100) / 4,
-                'VitaminC': [57.5, 86.25, 103.5, 103.5, 103.5, 103.5, 103.5, 103.5, 57.5, 74.75, 86.25, 86.25, 86.25, 86.25, 86.25, 86.25][idx],
-                'Magnesium': [184, 258.75, 310.5, 414, 414, 414, 402.5, 402.5, 195.5, 253, 264.5, 379.5, 391, 391, 368, 368][idx],
-                'Kalsium': [1380, 1380, 1380, 1150, 1150, 1380, 1380, 1380, 1380, 1380, 1380, 1150, 1150, 1380, 1380, 1380][idx],
-                'Kalium': [4485, 5520, 6095, 5405, 5405, 5405, 5405, 5405, 5060, 5520, 5750, 5405, 5405, 5405, 5405, 5405][idx],
-                'Besi': [9.2, 12.65, 12.65, 10.35, 10.35, 10.35, 10.35, 10.35, 9.2, 17.25, 17.25, 20.7, 20.7, 9.2, 9.2, 9.2][idx],
-                'GulaTotal': (5 * energy_needs / 100) / 4,
-                'LemakJenuh': (7 * energy_needs / 100) / 9,
-                'Natrium': [1105, 1275, 1445, 1275, 1275, 1105, 935, 850, 1190, 1275, 1360, 1275, 1275, 1190, 1020, 850][idx],
-                'Kolesterol': 200
+                'Serat'       : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])   * 1.15,
+                'Protein'     : (20 * energy_needs / 100) / 4,
+                'VitaminC'    : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])   * 1.15,
+                'VitaminB6'   : ([1.3, 1.3, 1.3, 1.3, 1.3, 1.7, 1.7, 1.7, 1.2, 1.2, 1.2, 1.3, 1.3, 1.5, 1.5, 1.5][idx]) * 1.15, 
+                'VitaminB12'  : ([3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 4, 4, 4, 4, 4, 4, 4][idx])             * 1.15,
+                'Besi'        : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])            * 1.15,
+                'Air'         : ([1850, 2100, 2300, 2500, 2500, 2500, 1800, 1600, 1850, 2100, 2150, 2350, 2350, 2350, 1550, 1400][idx]) * 1.15,
+                'GulaTotal'   : (5 * energy_needs / 100) / 4,
+                'LemakJenuh'  : (5 * energy_needs / 100) / 9,
+                'LemakTunggal': (17 * energy_needs / 100) / 9,
+                'LemakGanda'  : (10 * energy_needs / 100) / 9,
+                'Natrium'     : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol'  : 200,
+            })
+ 
+        # Pengidap Hipertensi dan Gangguan Mental
+        elif 'hipertensi' in diseases and 'gangguan mental' in diseases and 'diabetes' not in diseases and 'cardiovascular disease' not in diseases:
+            nutrition_req.update({
+                'Serat'       : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])     * 1.15,
+                'Protein'     : (20 * energy_needs / 100) / 4,
+                'VitaminC'    : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])     * 1.15,
+                'Magnesium'   : ([160, 225, 270, 360, 360, 360, 350, 350, 170, 220, 230, 330, 340, 340, 320, 320][idx]) * 1.15,
+                'Kalsium'     : ([1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200, 1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200][idx]) * 1.15,
+                'Kalium'      : ([3900, 4800, 5300, 4700, 4700, 4700, 4700, 4700, 4400, 4800, 5000, 4700, 4700, 4700, 4700, 4700][idx]) * 1.15,
+                'VitaminB6'   : ([1.3, 1.3, 1.3, 1.3, 1.3, 1.7, 1.7, 1.7, 1.2, 1.2, 1.2, 1.3, 1.3, 1.5, 1.5, 1.5][idx]) * 1.15, 
+                'VitaminB12'  : ([3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 4, 4, 4, 4, 4, 4, 4][idx])               * 1.15,
+                'Besi'        : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])              * 1.15,
+                'Air'         : ([1850, 2100, 2300, 2500, 2500, 2500, 1800, 1600, 1850, 2100, 2150, 2350, 2350, 2350, 1550, 1400][idx]) * 1.15,
+                'GulaTotal'   : (5 * energy_needs / 100) / 4,
+                'LemakJenuh'  : (5 * energy_needs / 100) / 9,
+                'LemakTunggal': (17 * energy_needs / 100) / 9,
+                'LemakGanda'  : (10 * energy_needs / 100) / 9,
+                'Natrium'     : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol'  : 200,
+            })
+ 
+        # Pengidap Cardiovascular Disease dan Gangguan Mental
+        elif 'cardiovascular disease' in diseases and 'gangguan mental' in diseases and 'diabetes' not in diseases and 'hipertensi' not in diseases:
+            nutrition_req.update({
+                'Serat'       : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])   * 1.15,
+                'Protein'     : (20 * energy_needs / 100) / 4,
+                'VitaminC'    : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])   * 1.15,
+                'VitaminB6'   : ([1.3, 1.3, 1.3, 1.3, 1.3, 1.7, 1.7, 1.7, 1.2, 1.2, 1.2, 1.3, 1.3, 1.5, 1.5, 1.5][idx]) * 1.15, 
+                'VitaminB12'  : ([3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 4, 4, 4, 4, 4, 4, 4][idx])             * 1.15,
+                'Besi'        : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])            * 1.15,
+                'Air'         : ([1850, 2100, 2300, 2500, 2500, 2500, 1800, 1600, 1850, 2100, 2150, 2350, 2350, 2350, 1550, 1400][idx]) * 1.15,
+                'GulaTotal'   : (5 * energy_needs / 100) / 4,
+                'LemakJenuh'  : (5 * energy_needs / 100) / 9,
+                'LemakTunggal': (17 * energy_needs / 100) / 9,
+                'LemakGanda'  : (10 * energy_needs / 100) / 9,
+                'Natrium'     : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol'  : 200,
+            })
+ 
+        # ----- KOMBINASI 3 PENYAKIT -----
+ 
+        # Pengidap Diabetes, Hipertensi, dan Cardiovascular Disease
+        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'cardiovascular disease' in diseases and 'gangguan mental' not in diseases:
+            nutrition_req.update({
+                'Serat'      : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])     * 1.15,
+                'Protein'    : (20 * energy_needs / 100) / 4,
+                'VitaminC'   : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])     * 1.15,
+                'Magnesium'  : ([160, 225, 270, 360, 360, 360, 350, 350, 170, 220, 230, 330, 340, 340, 320, 320][idx]) * 1.15,
+                'Kalsium'    : ([1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200, 1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200][idx]) * 1.15,
+                'Kalium'     : ([3900, 4800, 5300, 4700, 4700, 4700, 4700, 4700, 4400, 4800, 5000, 4700, 4700, 4700, 4700, 4700][idx]) * 1.15,
+                'Besi'       : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])               * 1.15,
+                'GulaTotal'  : (5 * energy_needs / 100) / 4,
+                'LemakJenuh' : (5 * energy_needs / 100) / 9,
+                'Natrium'    : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol' : 200,
+            })
+ 
+        # Pengidap Diabetes, Hipertensi, dan Gangguan Mental
+        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'gangguan mental' in diseases and 'cardiovascular disease' not in diseases:
+            nutrition_req.update({
+                'Serat'       : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])     * 1.15,
+                'Protein'     : (20 * energy_needs / 100) / 4,
+                'VitaminC'    : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])     * 1.15,
+                'Magnesium'   : ([160, 225, 270, 360, 360, 360, 350, 350, 170, 220, 230, 330, 340, 340, 320, 320][idx]) * 1.15,
+                'Kalsium'     : ([1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200, 1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200][idx]) * 1.15,
+                'Kalium'      : ([3900, 4800, 5300, 4700, 4700, 4700, 4700, 4700, 4400, 4800, 5000, 4700, 4700, 4700, 4700, 4700][idx]) * 1.15,
+                'VitaminB6'   : ([1.3, 1.3, 1.3, 1.3, 1.3, 1.7, 1.7, 1.7, 1.2, 1.2, 1.2, 1.3, 1.3, 1.5, 1.5, 1.5][idx]) * 1.15, 
+                'VitaminB12'  : ([3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 4, 4, 4, 4, 4, 4, 4][idx])               * 1.15,
+                'Besi'        : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])              * 1.15,
+                'Air'         : ([1850, 2100, 2300, 2500, 2500, 2500, 1800, 1600, 1850, 2100, 2150, 2350, 2350, 2350, 1550, 1400][idx]) * 1.15,
+                'GulaTotal'   : (5 * energy_needs / 100) / 4,
+                'LemakJenuh'  : (5 * energy_needs / 100) / 9,
+                'LemakTunggal': (17 * energy_needs / 100) / 9,
+                'LemakGanda'  : (10 * energy_needs / 100) / 9,
+                'Natrium'     : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol'  : 200,
+            })
+ 
+        # Pengidap Diabetes, Cardiovascular Disease, dan Gangguan Mental
+        elif 'diabetes' in diseases and 'cardiovascular disease' in diseases and 'gangguan mental' in diseases and 'hipertensi' not in diseases:
+            nutrition_req.update({
+                'Serat'       : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])   * 1.15,
+                'Protein'     : (20 * energy_needs / 100) / 4,
+                'VitaminC'    : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])   * 1.15,
+                'VitaminB6'   : ([1.3, 1.3, 1.3, 1.3, 1.3, 1.7, 1.7, 1.7, 1.2, 1.2, 1.2, 1.3, 1.3, 1.5, 1.5, 1.5][idx]) * 1.15, 
+                'VitaminB12'  : ([3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 4, 4, 4, 4, 4, 4, 4][idx])             * 1.15,
+                'Besi'        : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])            * 1.15,
+                'Air'         : ([1850, 2100, 2300, 2500, 2500, 2500, 1800, 1600, 1850, 2100, 2150, 2350, 2350, 2350, 1550, 1400][idx]) * 1.15,
+                'GulaTotal'   : (5 * energy_needs / 100) / 4,
+                'LemakJenuh'  : (5 * energy_needs / 100) / 9,
+                'LemakTunggal': (17 * energy_needs / 100) / 9,
+                'LemakGanda'  : (10 * energy_needs / 100) / 9,
+                'Natrium'     : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol'  : 200,
+            })
+ 
+        # Pengidap Hipertensi, Cardiovascular Disease, dan Gangguan Mental
+        elif 'hipertensi' in diseases and 'cardiovascular disease' in diseases and 'gangguan mental' in diseases and 'diabetes' not in diseases:
+            nutrition_req.update({
+                'Serat'       : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])     * 1.15,
+                'Protein'     : (20 * energy_needs / 100) / 4,
+                'VitaminC'    : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])     * 1.15,
+                'Magnesium'   : ([160, 225, 270, 360, 360, 360, 350, 350, 170, 220, 230, 330, 340, 340, 320, 320][idx]) * 1.15,
+                'Kalsium'     : ([1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200, 1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200][idx]) * 1.15,
+                'Kalium'      : ([3900, 4800, 5300, 4700, 4700, 4700, 4700, 4700, 4400, 4800, 5000, 4700, 4700, 4700, 4700, 4700][idx]) * 1.15,
+                'VitaminB6'   : ([1.3, 1.3, 1.3, 1.3, 1.3, 1.7, 1.7, 1.7, 1.2, 1.2, 1.2, 1.3, 1.3, 1.5, 1.5, 1.5][idx]) * 1.15, 
+                'VitaminB12'  : ([3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 4, 4, 4, 4, 4, 4, 4][idx])               * 1.15,
+                'Besi'        : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])              * 1.15,
+                'Air'         : ([1850, 2100, 2300, 2500, 2500, 2500, 1800, 1600, 1850, 2100, 2150, 2350, 2350, 2350, 1550, 1400][idx]) * 1.15,
+                'GulaTotal'   : (5 * energy_needs / 100) / 4,
+                'LemakJenuh'  : (5 * energy_needs / 100) / 9,
+                'LemakTunggal': (17 * energy_needs / 100) / 9,
+                'LemakGanda'  : (10 * energy_needs / 100) / 9,
+                'Natrium'     : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol'  : 200,
+            })
+ 
+        # ----- KOMBINASI 4 PENYAKIT -----
+ 
+        # Pengidap Diabetes, Hipertensi, Cardiovascular Disease, dan Gangguan Mental
+        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'cardiovascular disease' in diseases and 'gangguan mental' in diseases:
+            nutrition_req.update({
+                'Serat'       : ([28, 34, 37, 37, 36, 30, 25, 22, 27, 29, 29, 32, 30, 25, 22, 20][idx])     * 1.15,
+                'Protein'     : (20 * energy_needs / 100) / 4,
+                'VitaminC'    : ([50, 75, 90, 90, 90, 90, 90, 90, 50, 65, 75, 75, 75, 75, 75, 75][idx])     * 1.15,
+                'Magnesium'   : ([160, 225, 270, 360, 360, 360, 350, 350, 170, 220, 230, 330, 340, 340, 320, 320][idx]) * 1.15,
+                'Kalsium'     : ([1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200, 1200, 1200, 1200, 1000, 1000, 1200, 1200, 1200][idx]) * 1.15,
+                'Kalium'      : ([3900, 4800, 5300, 4700, 4700, 4700, 4700, 4700, 4400, 4800, 5000, 4700, 4700, 4700, 4700, 4700][idx]) * 1.15,
+                'VitaminB6'   : ([1.3, 1.3, 1.3, 1.3, 1.3, 1.7, 1.7, 1.7, 1.2, 1.2, 1.2, 1.3, 1.3, 1.5, 1.5, 1.5][idx]) * 1.15, 
+                'VitaminB12'  : ([3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 4, 4, 4, 4, 4, 4, 4][idx])               * 1.15,
+                'Besi'        : ([8, 11, 11, 9, 9, 9, 9, 9, 8, 15, 15, 18, 18, 8, 8, 8][idx])              * 1.15,
+                'Air'         : ([1850, 2100, 2300, 2500, 2500, 2500, 1800, 1600, 1850, 2100, 2150, 2350, 2350, 2350, 1550, 1400][idx]) * 1.15,
+                'GulaTotal'   : (5 * energy_needs / 100) / 4,
+                'LemakJenuh'  : (5 * energy_needs / 100) / 9,
+                'LemakTunggal': (17 * energy_needs / 100) / 9,
+                'LemakGanda'  : (10 * energy_needs / 100) / 9,
+                'Natrium'     : ([1300, 1500, 1700, 1500, 1500, 1300, 1100, 1000, 1400, 1500, 1600, 1500, 1500, 1400, 1200, 1000][idx]) * 0.85,
+                'Kolesterol'  : 200,
             })
 
     return nutrition_req
@@ -890,6 +1065,7 @@ def main():
     diabetes = st.sidebar.checkbox("Diabetes", disabled=normal)
     hipertensi = st.sidebar.checkbox("Hipertensi", disabled=normal)
     cardiovascular = st.sidebar.checkbox("Cardiovascular Disease", disabled=normal)
+    gangguanmental = st.sidebar.checkbox("Gangguan Mental", disabled=normal)
     
     # Prepare diseases list
     diseases = []
@@ -902,7 +1078,8 @@ def main():
             diseases.append('hipertensi')
         if cardiovascular:
             diseases.append('cardiovascular disease')
-
+        if gangguanmental:
+            diseases.append('gangguan mental')
     st.sidebar.markdown("### Preferensi Makanan:")
     
     # Mengambil kategori makanan dari data asli untuk dropdown
