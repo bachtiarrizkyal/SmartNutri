@@ -1164,7 +1164,7 @@ def main():
     df_preprocessed, scaler, df_original, nutrient_cols = preprocess_data(df_usda)
     
     # Sidebar for user input
-    st.sidebar.markdown("## 📋 Input Data Pengguna")
+    st.sidebar.markdown("## 📋 Data Pengguna")
     
     # Gender selection
     gender = st.sidebar.selectbox(
