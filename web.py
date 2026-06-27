@@ -1190,7 +1190,8 @@ def main():
         min_value=150.0,
         max_value=500.0,
         value=None,
-        placeholder="Masukkan Tinggi Badan Anda (Min 150cm)",
+        placeholder="Masukkan Tinggi Badan Anda",
+        help="Minimal 150 cm, maksimal 500 cm",        
         step=0.5
     )
     
