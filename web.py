@@ -1177,17 +1177,17 @@ def main():
     age = st.sidebar.number_input(
         "Usia (tahun):",
         min_value=10,
-        max_value=99,
-        value=25,
+        max_value=100,
+        value=None,
         step=1
     )
     
     # Height input
     height = st.sidebar.number_input(
         "Tinggi Badan (cm): (minimal 150 cm)",
-        min_value=150,
-        max_value=300,
-        value=170,
+        min_value=150.0,
+        max_value=500.0,
+        value=None,
         step=0.5
     )
     
@@ -1196,7 +1196,7 @@ def main():
         "Berat Badan (kg):",
         min_value=30.0,
         max_value=200.0,
-        value=70.0,
+        value=None,
         step=0.5
     )
     
