@@ -550,111 +550,256 @@ def label_food_by_nutrition(df, diseases, df_original):
     for col in nutrient_cols:
         df_nutrition[f'original_{col}'] = df_original[col].values
     
-    # Define thresholds for high nutrients
+    # ===== BATAS NUTRISI TINGGI =====
     high_thresholds = {
-    'Protein': 10,
-    'Serat': 6,
-    'VitaminC': 15,
-    'Kalium': 250,
-    'Magnesium': 48,
-    'Kalsium': 150,
-    'Besi': 2.4,
-    'LemakTunggal': 4,
-    'LemakGanda': 3,
-    'VitaminB6': 0.2,
-    'VitaminB12': 0.6,
-    'Air': 65
-}
-    
-    # Define thresholds for low nutrients
-    low_thresholds = {
-        'GulaTotal': 15,
-        'Natrium': 600,
-        'LemakJenuh': 5,
-        'Kolesterol': 100
+        'Protein'      : 10,
+        'Serat'        : 6,
+        'VitaminC'     : 15,
+        'Kalium'       : 250,
+        'Magnesium'    : 48,
+        'Kalsium'      : 150,
+        'Besi'         : 2.4,
+        'LemakTunggal' : 4,
+        'LemakGanda'   : 3,
+        'VitaminB6'    : 0.2,
+        'VitaminB12'   : 0.6,
+        'Air'          : 65,
     }
-    
-    # Identify foods high in certain nutrients
-    df_nutrition['high_protein'] = df_nutrition['original_Protein'] >= high_thresholds['Protein']
-    df_nutrition['high_fiber'] = df_nutrition['original_Serat'] >= high_thresholds['Serat']
-    df_nutrition['high_vitaminc'] = df_nutrition['original_VitaminC'] >= high_thresholds['VitaminC']
-    df_nutrition['high_potassium'] = df_nutrition['original_Kalium'] >= high_thresholds['Kalium']
-    df_nutrition['high_magnesium'] = df_nutrition['original_Magnesium'] >= high_thresholds['Magnesium']
-    df_nutrition['high_calcium'] = df_nutrition['original_Kalsium'] >= high_thresholds['Kalsium']
-    df_nutrition['high_iron'] = df_nutrition['original_Besi'] >= high_thresholds['Besi']
-    df_nutrition['high_monounsaturated_fat'] = df_nutrition['original_LemakTunggal'] >= high_thresholds['LemakTunggal']
-    df_nutrition['high_polyunsaturated_fat'] = df_nutrition['original_LemakGanda'] >= high_thresholds['LemakGanda']
-    df_nutrition['high_vitaminb6'] = df_nutrition['original_VitaminB6'] >= high_thresholds['VitaminB6']
-    df_nutrition['high_vitaminb12'] = df_nutrition['original_VitaminB12'] >= high_thresholds['VitaminB12']
-    df_nutrition['high_water'] = df_nutrition['original_Air'] >= high_thresholds['Air']
-    
-    
-    # Identify foods low in certain nutrients
-    df_nutrition['low_sugar'] = df_nutrition['original_GulaTotal'] <= low_thresholds['GulaTotal']
-    df_nutrition['low_sodium'] = df_nutrition['original_Natrium'] <= low_thresholds['Natrium']
-    df_nutrition['low_sat_fat'] = df_nutrition['original_LemakJenuh'] <= low_thresholds['LemakJenuh']
+ 
+    # ===== BATAS NUTRISI RENDAH =====
+    low_thresholds = {
+        'GulaTotal'  : 15,
+        'Natrium'    : 600,
+        'LemakJenuh' : 5,
+        'Kolesterol' : 100,
+    }
+ 
+    # ===== FLAG NUTRISI TINGGI =====
+    df_nutrition['high_protein']            = df_nutrition['original_Protein']      >= high_thresholds['Protein']
+    df_nutrition['high_fiber']              = df_nutrition['original_Serat']         >= high_thresholds['Serat']
+    df_nutrition['high_vitaminc']           = df_nutrition['original_VitaminC']      >= high_thresholds['VitaminC']
+    df_nutrition['high_potassium']          = df_nutrition['original_Kalium']        >= high_thresholds['Kalium']
+    df_nutrition['high_magnesium']          = df_nutrition['original_Magnesium']     >= high_thresholds['Magnesium']
+    df_nutrition['high_calcium']            = df_nutrition['original_Kalsium']       >= high_thresholds['Kalsium']
+    df_nutrition['high_iron']               = df_nutrition['original_Besi']          >= high_thresholds['Besi']
+    df_nutrition['high_monounsaturated_fat']= df_nutrition['original_LemakTunggal']  >= high_thresholds['LemakTunggal']
+    df_nutrition['high_polyunsaturated_fat']= df_nutrition['original_LemakGanda']    >= high_thresholds['LemakGanda']
+    df_nutrition['high_vitaminb6']          = df_nutrition['original_VitaminB6']     >= high_thresholds['VitaminB6']
+    df_nutrition['high_vitaminb12']         = df_nutrition['original_VitaminB12']    >= high_thresholds['VitaminB12']
+    df_nutrition['high_water']              = df_nutrition['original_Air']           >= high_thresholds['Air']
+ 
+    # ===== FLAG NUTRISI RENDAH =====
+    df_nutrition['low_sugar']       = df_nutrition['original_GulaTotal']  <= low_thresholds['GulaTotal']
+    df_nutrition['low_sodium']      = df_nutrition['original_Natrium']    <= low_thresholds['Natrium']
+    df_nutrition['low_sat_fat']     = df_nutrition['original_LemakJenuh'] <= low_thresholds['LemakJenuh']
     df_nutrition['low_cholesterol'] = df_nutrition['original_Kolesterol'] <= low_thresholds['Kolesterol']
-    
-    # Label makanan berdasarkan riwayat penyakit
-    if not diseases or 'normal' in diseases:
-        # Tidak ada riwayat penyakit, makanan sehat secara umum
+ 
+    # ===== LABELING =====
+    if not diseases:
+        # Tidak ada riwayat penyakit
         df_nutrition['suitable'] = (
-            df_nutrition['low_sugar'] &
-            df_nutrition['low_sodium'] &
-            df_nutrition['low_sat_fat'] &
+            df_nutrition['low_sugar']       &
+            df_nutrition['low_sodium']      &
+            df_nutrition['low_sat_fat']     &
             df_nutrition['low_cholesterol']
         ).astype(int)
+ 
     else:
+ 
+        # ----- TUNGGAL -----
+ 
         # Pengidap Diabetes
-        if 'diabetes' in diseases and 'hipertensi' not in diseases and 'cardiovascular disease' not in diseases:
+        if 'diabetes' in diseases and 'hipertensi' not in diseases and 'cardiovascular disease' not in diseases and 'gangguan mental' not in diseases:
             df_nutrition['suitable'] = (
                 (df_nutrition['high_protein'] | df_nutrition['high_fiber'] | df_nutrition['high_vitaminc']) &
                 (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
             ).astype(int)
-
+ 
         # Pengidap Hipertensi
-        elif 'hipertensi' in diseases and 'diabetes' not in diseases and 'cardiovascular disease' not in diseases:
+        elif 'hipertensi' in diseases and 'diabetes' not in diseases and 'cardiovascular disease' not in diseases and 'gangguan mental' not in diseases:
             df_nutrition['suitable'] = (
                 (df_nutrition['high_fiber'] | df_nutrition['high_potassium'] | df_nutrition['high_magnesium'] | df_nutrition['high_calcium']) &
                 (df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
             ).astype(int)
-
+ 
         # Pengidap Cardiovascular Disease
-        elif 'cardiovascular disease' in diseases and 'diabetes' not in diseases and 'hipertensi' not in diseases:
+        elif 'cardiovascular disease' in diseases and 'diabetes' not in diseases and 'hipertensi' not in diseases and 'gangguan mental' not in diseases:
             df_nutrition['suitable'] = (
                 (df_nutrition['high_protein'] | df_nutrition['high_fiber'] | df_nutrition['high_iron']) &
                 (df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
             ).astype(int)
-
+ 
+        # Pengidap Gangguan Mental
+        elif 'gangguan mental' in diseases and 'diabetes' not in diseases and 'hipertensi' not in diseases and 'cardiovascular disease' not in diseases:
+            df_nutrition['suitable'] = (
+                (df_nutrition['high_protein']             |
+                 df_nutrition['high_fiber']               |
+                 df_nutrition['high_vitaminc']            |
+                 df_nutrition['high_vitaminb12']          |
+                 df_nutrition['high_iron']                |
+                 df_nutrition['high_water']               |
+                 df_nutrition['high_monounsaturated_fat'] |
+                 df_nutrition['high_polyunsaturated_fat'] |
+                 df_nutrition['high_vitaminb6'])          &
+                (df_nutrition['low_sugar'] & df_nutrition['low_sat_fat'])
+            ).astype(int)
+ 
+        # ----- KOMBINASI 2 PENYAKIT -----
+ 
         # Pengidap Diabetes dan Hipertensi
-        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'cardiovascular disease' not in diseases:
+        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'cardiovascular disease' not in diseases and 'gangguan mental' not in diseases:
             df_nutrition['suitable'] = (
-                (df_nutrition['high_protein'] | df_nutrition['high_fiber'] | df_nutrition['high_potassium'] |
-                 df_nutrition['high_magnesium'] | df_nutrition['high_calcium'] | df_nutrition['high_vitaminc']) &
+                (df_nutrition['high_protein'] | df_nutrition['high_fiber']    |
+                 df_nutrition['high_vitaminc'] | df_nutrition['high_potassium'] |
+                 df_nutrition['high_magnesium'] | df_nutrition['high_calcium']) &
                 (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
             ).astype(int)
-
+ 
         # Pengidap Diabetes dan Cardiovascular Disease
-        elif 'diabetes' in diseases and 'cardiovascular disease' in diseases and 'hipertensi' not in diseases:
+        elif 'diabetes' in diseases and 'cardiovascular disease' in diseases and 'hipertensi' not in diseases and 'gangguan mental' not in diseases:
             df_nutrition['suitable'] = (
-                (df_nutrition['high_protein'] | df_nutrition['high_fiber'] | df_nutrition['high_iron'] | df_nutrition['high_vitaminc']) &
+                (df_nutrition['high_protein'] | df_nutrition['high_fiber'] |
+                 df_nutrition['high_vitaminc'] | df_nutrition['high_iron']) &
                 (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
             ).astype(int)
-
+ 
         # Pengidap Hipertensi dan Cardiovascular Disease
-        elif 'hipertensi' in diseases and 'cardiovascular disease' in diseases and 'diabetes' not in diseases:
+        elif 'hipertensi' in diseases and 'cardiovascular disease' in diseases and 'diabetes' not in diseases and 'gangguan mental' not in diseases:
             df_nutrition['suitable'] = (
-                (df_nutrition['high_fiber'] | df_nutrition['high_protein'] | df_nutrition['high_iron'] |
-                 df_nutrition['high_potassium'] | df_nutrition['high_magnesium'] | df_nutrition['high_calcium']) &
+                (df_nutrition['high_protein']  | df_nutrition['high_fiber']    |
+                 df_nutrition['high_iron']      | df_nutrition['high_potassium'] |
+                 df_nutrition['high_magnesium'] | df_nutrition['high_calcium']) &
                 (df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
             ).astype(int)
-
-        # Pengidap Diabetes, Hipertensi, dan Cardiovascular Disease
-        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'cardiovascular disease' in diseases:
+ 
+        # Pengidap Diabetes dan Gangguan Mental
+        elif 'diabetes' in diseases and 'gangguan mental' in diseases and 'hipertensi' not in diseases and 'cardiovascular disease' not in diseases:
             df_nutrition['suitable'] = (
-                (df_nutrition['high_protein'] | df_nutrition['high_fiber'] | df_nutrition['high_vitaminc'] |
-                 df_nutrition['high_potassium'] | df_nutrition['high_magnesium'] | df_nutrition['high_calcium'] |
+                (df_nutrition['high_protein']             |
+                 df_nutrition['high_fiber']               |
+                 df_nutrition['high_vitaminc']            |
+                 df_nutrition['high_vitaminb12']          |
+                 df_nutrition['high_iron']                |
+                 df_nutrition['high_water']               |
+                 df_nutrition['high_monounsaturated_fat'] |
+                 df_nutrition['high_polyunsaturated_fat'] |
+                 df_nutrition['high_vitaminb6'])          &
+                (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
+            ).astype(int)
+ 
+        # Pengidap Hipertensi dan Gangguan Mental
+        elif 'hipertensi' in diseases and 'gangguan mental' in diseases and 'diabetes' not in diseases and 'cardiovascular disease' not in diseases:
+            df_nutrition['suitable'] = (
+                (df_nutrition['high_protein']             |
+                 df_nutrition['high_fiber']               |
+                 df_nutrition['high_vitaminc']            |
+                 df_nutrition['high_potassium']           |
+                 df_nutrition['high_magnesium']           |
+                 df_nutrition['high_calcium']             |
+                 df_nutrition['high_vitaminb12']          |
+                 df_nutrition['high_iron']                |
+                 df_nutrition['high_water']               |
+                 df_nutrition['high_monounsaturated_fat'] |
+                 df_nutrition['high_polyunsaturated_fat'] |
+                 df_nutrition['high_vitaminb6'])          &
+                (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
+            ).astype(int)
+ 
+        # Pengidap Cardiovascular Disease dan Gangguan Mental
+        elif 'cardiovascular disease' in diseases and 'gangguan mental' in diseases and 'diabetes' not in diseases and 'hipertensi' not in diseases:
+            df_nutrition['suitable'] = (
+                (df_nutrition['high_protein']             |
+                 df_nutrition['high_fiber']               |
+                 df_nutrition['high_vitaminc']            |
+                 df_nutrition['high_vitaminb12']          |
+                 df_nutrition['high_iron']                |
+                 df_nutrition['high_water']               |
+                 df_nutrition['high_monounsaturated_fat'] |
+                 df_nutrition['high_polyunsaturated_fat'] |
+                 df_nutrition['high_vitaminb6'])          &
+                (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
+            ).astype(int)
+ 
+        # ----- KOMBINASI 3 PENYAKIT -----
+ 
+        # Pengidap Diabetes, Hipertensi, dan Cardiovascular Disease
+        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'cardiovascular disease' in diseases and 'gangguan mental' not in diseases:
+            df_nutrition['suitable'] = (
+                (df_nutrition['high_protein']  | df_nutrition['high_fiber']    |
+                 df_nutrition['high_vitaminc'] | df_nutrition['high_potassium'] |
+                 df_nutrition['high_magnesium'] | df_nutrition['high_calcium']  |
                  df_nutrition['high_iron']) &
+                (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
+            ).astype(int)
+ 
+        # Pengidap Diabetes, Hipertensi, dan Gangguan Mental
+        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'gangguan mental' in diseases and 'cardiovascular disease' not in diseases:
+            df_nutrition['suitable'] = (
+                (df_nutrition['high_protein']             |
+                 df_nutrition['high_fiber']               |
+                 df_nutrition['high_vitaminc']            |
+                 df_nutrition['high_potassium']           |
+                 df_nutrition['high_magnesium']           |
+                 df_nutrition['high_calcium']             |
+                 df_nutrition['high_vitaminb12']          |
+                 df_nutrition['high_iron']                |
+                 df_nutrition['high_water']               |
+                 df_nutrition['high_monounsaturated_fat'] |
+                 df_nutrition['high_polyunsaturated_fat'] |
+                 df_nutrition['high_vitaminb6'])          &
+                (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
+            ).astype(int)
+ 
+        # Pengidap Diabetes, Cardiovascular Disease, dan Gangguan Mental
+        elif 'diabetes' in diseases and 'cardiovascular disease' in diseases and 'gangguan mental' in diseases and 'hipertensi' not in diseases:
+            df_nutrition['suitable'] = (
+                (df_nutrition['high_protein']             |
+                 df_nutrition['high_fiber']               |
+                 df_nutrition['high_vitaminc']            |
+                 df_nutrition['high_vitaminb12']          |
+                 df_nutrition['high_iron']                |
+                 df_nutrition['high_water']               |
+                 df_nutrition['high_monounsaturated_fat'] |
+                 df_nutrition['high_polyunsaturated_fat'] |
+                 df_nutrition['high_vitaminb6'])          &
+                (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
+            ).astype(int)
+ 
+        # Pengidap Hipertensi, Cardiovascular Disease, dan Gangguan Mental
+        elif 'hipertensi' in diseases and 'cardiovascular disease' in diseases and 'gangguan mental' in diseases and 'diabetes' not in diseases:
+            df_nutrition['suitable'] = (
+                (df_nutrition['high_protein']             |
+                 df_nutrition['high_fiber']               |
+                 df_nutrition['high_vitaminc']            |
+                 df_nutrition['high_potassium']           |
+                 df_nutrition['high_magnesium']           |
+                 df_nutrition['high_calcium']             |
+                 df_nutrition['high_vitaminb12']          |
+                 df_nutrition['high_iron']                |
+                 df_nutrition['high_water']               |
+                 df_nutrition['high_monounsaturated_fat'] |
+                 df_nutrition['high_polyunsaturated_fat'] |
+                 df_nutrition['high_vitaminb6'])          &
+                (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
+            ).astype(int)
+ 
+        # ----- KOMBINASI 4 PENYAKIT -----
+ 
+        # Pengidap Diabetes, Hipertensi, Cardiovascular Disease, dan Gangguan Mental
+        elif 'diabetes' in diseases and 'hipertensi' in diseases and 'cardiovascular disease' in diseases and 'gangguan mental' in diseases:
+            df_nutrition['suitable'] = (
+                (df_nutrition['high_protein']             |
+                 df_nutrition['high_fiber']               |
+                 df_nutrition['high_vitaminc']            |
+                 df_nutrition['high_potassium']           |
+                 df_nutrition['high_magnesium']           |
+                 df_nutrition['high_calcium']             |
+                 df_nutrition['high_vitaminb12']          |
+                 df_nutrition['high_iron']                |
+                 df_nutrition['high_water']               |
+                 df_nutrition['high_monounsaturated_fat'] |
+                 df_nutrition['high_polyunsaturated_fat'] |
+                 df_nutrition['high_vitaminb6'])          &
                 (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
             ).astype(int)
         

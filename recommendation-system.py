@@ -501,11 +501,17 @@ def process_user_data(gender, age, height, weight, diseases):
 
 # ===== ITEM DATA PROCESSING =====
 def label_food_by_nutrition(df, diseases, df_original):
+    """Label food based on nutrition and disease conditions"""
     df_nutrition = df.copy()
- 
+    
+    # Add original nutrition values
+    nutrient_cols = ['Energi', 'Protein', 'Serat', 'VitaminC', 'Kalium', 'Magnesium',
+                    'Kalsium', 'Besi', 'GulaTotal', 'Natrium', 'LemakJenuh', 'Kolesterol',
+                    'LemakTunggal', 'LemakGanda', 'VitaminB6', 'VitaminB12', 'Air']
+    
     for col in nutrient_cols:
         df_nutrition[f'original_{col}'] = df_original[col].values
- 
+    
     # ===== BATAS NUTRISI TINGGI =====
     high_thresholds = {
         'Protein'      : 10,
@@ -758,7 +764,11 @@ def label_food_by_nutrition(df, diseases, df_original):
                  df_nutrition['high_vitaminb6'])          &
                 (df_nutrition['low_sugar'] & df_nutrition['low_sodium'] & df_nutrition['low_sat_fat'] & df_nutrition['low_cholesterol'])
             ).astype(int)
- 
+        
+        # Fallback jika tidak ada kondisi yang cocok
+        else:
+            df_nutrition['suitable'] = 1
+    
     return df_nutrition
 
 def prepare_food_data(df, user_info, df_original):
