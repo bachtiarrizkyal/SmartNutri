@@ -1154,14 +1154,14 @@ def main():
     
     # Tombol menuju web rekomendasi penurunan berat badan
     st.markdown("""
-    <div style="text-align: center; margin: 1rem 0;">
-        <a href="https://meal-plan-obesitas.streamlit.app/" target="_blank" 
-           style="background-color: #1e88e5; color: white; padding: 0.6rem 1.2rem; 
-                  border-radius: 0.5rem; text-decoration: none; font-weight: bold;
-                  display: inline-block;">
-            ⚖️ Coba: Rekomendasi Menu Penurunan Berat Badan
-        </a>
-    </div>
+<div style="text-align: center; margin: 1rem 0;">
+    <a href="https://meal-plan-obesitas.streamlit.app/" target="_blank" 
+       style="background-color: #ffffff; color: #1e88e5; padding: 0.6rem 1.2rem; 
+              border-radius: 0.5rem; text-decoration: none; font-weight: bold;
+              display: inline-block; border: 2px solid #1e88e5;">
+        ⚖️ Coba: Rekomendasi Menu Penurunan Berat Badan
+    </a>
+</div>
     """, unsafe_allow_html=True)
     
     # Load data
