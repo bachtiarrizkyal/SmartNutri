@@ -1152,6 +1152,15 @@ def get_recommendation(knn, df_labeled, user_info, df_original, n_recommendation
 def main():
     st.markdown('<h1 class="main-header">🥗 SmartNutri</h1>', unsafe_allow_html=True)
     
+    # Tombol menuju web rekomendasi penurunan berat badan
+    col_a, col_b, col_c = st.columns([1, 2, 1])
+    with col_b:
+        st.link_button(
+            "⚖️ Coba juga: Rekomendasi Menu untuk Penurunan Berat Badan",
+            "https://meal-plan-obesitas.streamlit.app/",
+            use_container_width=True
+        )
+    
     # Load data
     with st.spinner('Memuat data makanan...'):
         df_usda = load_data()
