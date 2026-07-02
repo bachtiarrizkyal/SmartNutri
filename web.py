@@ -1156,9 +1156,9 @@ def main():
     st.markdown("""
 <div style="text-align: center; margin: 1rem 0;">
     <a href="https://meal-plan-obesitas.streamlit.app/" target="_blank" 
-       style="background-color: #ffffff; color: #1e88e5; padding: 0.6rem 1.2rem; 
+       style="background-color: #ffffff; color: #262730; padding: 0.6rem 1.2rem; 
               border-radius: 0.5rem; text-decoration: none; font-weight: bold;
-              display: inline-block; border: 2px solid #1e88e5;">
+              display: inline-block; border: 1px solid #d3d3d3;">
         ⚖️ Coba: Rekomendasi Menu Penurunan Berat Badan
     </a>
 </div>
