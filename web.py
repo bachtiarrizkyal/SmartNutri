@@ -1153,13 +1153,16 @@ def main():
     st.markdown('<h1 class="main-header">🥗 SmartNutri</h1>', unsafe_allow_html=True)
     
     # Tombol menuju web rekomendasi penurunan berat badan
-    col_a, col_b, col_c = st.columns([1, 2, 1])
-    with col_b:
-        st.link_button(
-            "⚖️ Coba juga: Rekomendasi Menu untuk Penurunan Berat Badan",
-            "https://meal-plan-obesitas.streamlit.app/",
-            use_container_width=True
-        )
+    st.markdown("""
+    <div style="text-align: center; margin: 1rem 0;">
+        <a href="https://meal-plan-obesitas.streamlit.app/" target="_blank" 
+           style="background-color: #1e88e5; color: white; padding: 0.6rem 1.2rem; 
+                  border-radius: 0.5rem; text-decoration: none; font-weight: bold;
+                  display: inline-block;">
+            ⚖️ Coba: Rekomendasi Menu Penurunan Berat Badan
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Load data
     with st.spinner('Memuat data makanan...'):
