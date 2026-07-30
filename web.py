@@ -1703,9 +1703,9 @@ def main():
         - Dosen Pembimbing: Retno Aulia Vinarti, Ahmad Muklason, Riris Diana Rachmayanti, Intan Yuniar Purbasari, dan Fetty Tri Anggraeny.
         - Ahli Gizi: Triska Susila Nindya.
         
-        **Disclaimer**: 
+        **Disclaimer:**  
         Rekomendasi makanan ini bukan merupakan diagnosis maupun terapi medis. Konsultasikan kepada dokter spesialis kejiwaan atau ahli gizi apabila memiliki penyakit tertentu.
-        
+
         Serta tidak ada data pribadi yang disimpan dalam aplikasi ini (data pribadi hanya sekali pakai untuk memfilter nutrisi makanan).
         """)
 
